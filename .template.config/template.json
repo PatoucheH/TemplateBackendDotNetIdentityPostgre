@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json.schemastore.org/template",
+  "author": "MyCompany",
+  "classifications": [
+    "Web",
+    "API",
+    "Backend",
+    "Identity",
+    "PostgreSQL",
+    "Clean Architecture"
+  ],
+  "identity": "MyCompany.DotNetBackendTemplate",
+  "name": ".NET Backend with Identity + PostgreSQL (4 projects)",
+  "shortName": "backend-identity-pg",
+  "description": "A Clean Architecture backend template with ASP.NET Core Identity, JWT authentication, PostgreSQL, and Entity Framework Core. Includes 4 projects: Api, Application, Domain, and Infrastructure.",
+  "tags": {
+    "language": "C#",
+    "type": "solution"
+  },
+  "sourceName": "MyTemplate",
+  "preferNameDirectory": true,
+  "defaultName": "MyApp",
+  "symbols": {
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net10.0",
+          "description": ".NET 10"
+        },
+        {
+          "choice": "net9.0",
+          "description": ".NET 9"
+        },
+        {
+          "choice": "net8.0",
+          "description": ".NET 8 (LTS)"
+        }
+      ],
+      "defaultValue": "net10.0",
+      "replaces": "net10.0"
+    },
+    "DatabaseName": {
+      "type": "parameter",
+      "description": "The name of the PostgreSQL database",
+      "datatype": "string",
+      "defaultValue": "myapp_db",
+      "replaces": "mytemplate_db"
+    },
+    "DatabaseNameDev": {
+      "type": "parameter",
+      "description": "The name of the development PostgreSQL database",
+      "datatype": "string",
+      "defaultValue": "myapp_dev",
+      "replaces": "mytemplate_dev"
+    },
+    "PostgresUser": {
+      "type": "parameter",
+      "description": "PostgreSQL username",
+      "datatype": "string",
+      "defaultValue": "postgres",
+      "replaces": "postgres"
+    },
+    "PostgresPassword": {
+      "type": "parameter",
+      "description": "PostgreSQL password (change in production!)",
+      "datatype": "string",
+      "defaultValue": "your_password_here",
+      "replaces": "your_password_here"
+    },
+    "PostgresPasswordDev": {
+      "type": "parameter",
+      "description": "PostgreSQL development password",
+      "datatype": "string",
+      "defaultValue": "your_dev_password",
+      "replaces": "your_dev_password"
+    },
+    "JwtSecretKey": {
+      "type": "parameter",
+      "description": "JWT Secret Key (minimum 32 characters, change in production!)",
+      "datatype": "string",
+      "defaultValue": "CHANGE_THIS_TO_A_SECURE_SECRET_KEY_AT_LEAST_32_CHARACTERS_LONG!",
+      "replaces": "CHANGE_THIS_TO_A_SECURE_SECRET_KEY_AT_LEAST_32_CHARACTERS_LONG!"
+    },
+    "JwtIssuer": {
+      "type": "generated",
+      "generator": "join",
+      "parameters": {
+        "symbols": [
+          { "type": "ref", "value": "name" },
+          { "type": "const", "value": ".Api" }
+        ]
+      },
+      "replaces": "__JWT_ISSUER__"
+    },
+    "JwtIssuerDev": {
+      "type": "generated",
+      "generator": "join",
+      "parameters": {
+        "symbols": [
+          { "type": "ref", "value": "name" },
+          { "type": "const", "value": ".Api.Dev" }
+        ]
+      },
+      "replaces": "__JWT_ISSUER_DEV__"
+    },
+    "JwtAudience": {
+      "type": "generated",
+      "generator": "join",
+      "parameters": {
+        "symbols": [
+          { "type": "ref", "value": "name" },
+          { "type": "const", "value": ".Client" }
+        ]
+      },
+      "replaces": "__JWT_AUDIENCE__"
+    },
+    "JwtAudienceDev": {
+      "type": "generated",
+      "generator": "join",
+      "parameters": {
+        "symbols": [
+          { "type": "ref", "value": "name" },
+          { "type": "const", "value": ".Client.Dev" }
+        ]
+      },
+      "replaces": "__JWT_AUDIENCE_DEV__"
+    },
+    "IncludeSwagger": {
+      "type": "parameter",
+      "description": "Include Swagger/OpenAPI documentation",
+      "datatype": "bool",
+      "defaultValue": "true"
+    },
+    "AuthorName": {
+      "type": "parameter",
+      "description": "Author name for Swagger contact info",
+      "datatype": "string",
+      "defaultValue": "Your Name",
+      "replaces": "Votre Nom"
+    },
+    "AuthorEmail": {
+      "type": "parameter",
+      "description": "Author email for Swagger contact info",
+      "datatype": "string",
+      "defaultValue": "contact@example.com",
+      "replaces": "contact@example.com"
+    },
+    "copyrightYear": {
+      "type": "generated",
+      "generator": "now",
+      "parameters": {
+        "format": "yyyy"
+      }
+    },
+    "creationDate": {
+      "type": "generated",
+      "generator": "now",
+      "parameters": {
+        "format": "yyyy-MM-dd"
+      }
+    }
+  },
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "exclude": [
+            "**/bin/**",
+            "**/obj/**",
+            "**/.vs/**",
+            "**/.vscode/**",
+            "**/.idea/**",
+            "**/.claude/**",
+            "**/node_modules/**",
+            "**/*.user",
+            "**/*.suo",
+            "**/launchSettings.json",
+            "README_TEMPLATE.md",
+            "**/tmpclaude-*",
+            "**/.git/**",
+            "**/.gitattributes"
+          ]
+        }
+      ]
+    }
+  ],
+  "primaryOutputs": [
+    {
+      "path": "MyTemplate.sln"
+    }
+  ],
+  "postActions": [
+    {
+      "id": "restore",
+      "condition": "true",
+      "description": "Restore NuGet packages",
+      "manualInstructions": [
+        {
+          "text": "Run 'dotnet restore'"
+        }
+      ],
+      "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+      "continueOnError": true
+    },
+    {
+      "id": "instructions",
+      "description": "Manual steps to complete setup",
+      "manualInstructions": [
+        {
+          "text": "Next steps:\n1. Update the connection string in appsettings.json with your PostgreSQL credentials\n2. Change the JWT SecretKey in appsettings.json (minimum 32 characters)\n3. Run: dotnet ef database update --project [YourProject].Infrastructure --startup-project [YourProject].Api\n4. Run: dotnet run --project [YourProject].Api"
+        }
+      ],
+      "actionId": "AC1156F7-BB77-4DB8-B28F-24EEBCCA1E5C"
+    }
+  ]
+}

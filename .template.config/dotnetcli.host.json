@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json.schemastore.org/dotnetcli.host",
+  "symbolInfo": {
+    "Framework": {
+      "longName": "framework",
+      "shortName": "f"
+    },
+    "DatabaseName": {
+      "longName": "database-name",
+      "shortName": "db"
+    },
+    "DatabaseNameDev": {
+      "longName": "database-name-dev",
+      "shortName": "dbdev"
+    },
+    "PostgresUser": {
+      "longName": "postgres-user",
+      "shortName": "pgu"
+    },
+    "PostgresPassword": {
+      "longName": "postgres-password",
+      "shortName": "pgp"
+    },
+    "PostgresPasswordDev": {
+      "longName": "postgres-password-dev",
+      "shortName": "pgpd"
+    },
+    "JwtSecretKey": {
+      "longName": "jwt-secret",
+      "shortName": "jwts"
+    },
+    "AuthorName": {
+      "longName": "author-name"
+    },
+    "AuthorEmail": {
+      "longName": "author-email"
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json.schemastore.org/vs-2017.3.host",
+  "icon": "icon.png",
+  "symbolInfo": [
+    {
+      "id": "Framework",
+      "name": {
+        "text": "Target Framework"
+      },
+      "isVisible": true
+    },
+    {
+      "id": "DatabaseName",
+      "name": {
+        "text": "Database Name"
+      },
+      "isVisible": true
+    },
+    {
+      "id": "DatabaseNameDev",
+      "name": {
+        "text": "Development Database Name"
+      },
+      "isVisible": true
+    },
+    {
+      "id": "PostgresUser",
+      "name": {
+        "text": "PostgreSQL Username"
+      },
+      "isVisible": true
+    },
+    {
+      "id": "PostgresPassword",
+      "name": {
+        "text": "PostgreSQL Password"
+      },
+      "isVisible": true
+    },
+    {
+      "id": "JwtSecretKey",
+      "name": {
+        "text": "JWT Secret Key (min 32 chars)"
+      },
+      "isVisible": true
+    },
+    {
+      "id": "JwtIssuer",
+      "name": {
+        "text": "JWT Issuer"
+      },
+      "isVisible": true
+    },
+    {
+      "id": "JwtAudience",
+      "name": {
+        "text": "JWT Audience"
+      },
+      "isVisible": true
+    },
+    {
+      "id": "AuthorName",
+      "name": {
+        "text": "Author Name"
+      },
+      "isVisible": true
+    },
+    {
+      "id": "AuthorEmail",
+      "name": {
+        "text": "Author Email"
+      },
+      "isVisible": true
+    }
+  ]
+}
