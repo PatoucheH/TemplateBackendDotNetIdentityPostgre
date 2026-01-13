@@ -5,22 +5,22 @@ using MyTemplate.Domain.Entities;
 namespace MyTemplate.Infrastructure.Data.Configurations;
 
 /// <summary>
-/// Configuration Fluent API pour ApplicationUser.
-/// Définit les contraintes et index pour la table des utilisateurs.
+/// Fluent API configuration for ApplicationUser.
+/// Defines constraints and indexes for the users table.
 /// </summary>
 public class ApplicationUserConfiguration : IEntityTypeConfiguration<ApplicationUser>
 {
     public void Configure(EntityTypeBuilder<ApplicationUser> builder)
     {
         // ============================================================
-        // CONFIGURATION DE LA TABLE
+        // TABLE CONFIGURATION
         // ============================================================
 
-        // Nom de la table (optionnel, hérite d'Identity par défaut)
+        // Table name (optional, inherits from Identity by default)
         // builder.ToTable("Users");
 
         // ============================================================
-        // PROPRIÉTÉS
+        // PROPERTIES
         // ============================================================
 
         builder.Property(u => u.FirstName)
@@ -36,26 +36,26 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
             .HasDefaultValue(true);
 
         // ============================================================
-        // INDEX
+        // INDEXES
         // ============================================================
 
-        // Index sur IsActive pour les requêtes de filtrage
+        // Index on IsActive for filtering queries
         builder.HasIndex(u => u.IsActive);
 
-        // Index sur CreatedAt pour les requêtes de tri
+        // Index on CreatedAt for sorting queries
         builder.HasIndex(u => u.CreatedAt);
 
         // ============================================================
-        // RELATIONS - Décommentez selon vos besoins
+        // RELATIONSHIPS - Uncomment as needed
         // ============================================================
 
-        // // Relation 1-N avec Orders
+        // // One-to-Many relationship with Orders
         // builder.HasMany(u => u.Orders)
         //     .WithOne(o => o.User)
         //     .HasForeignKey(o => o.UserId)
         //     .OnDelete(DeleteBehavior.Restrict);
 
-        // // Relation 1-1 avec UserProfile
+        // // One-to-One relationship with UserProfile
         // builder.HasOne(u => u.Profile)
         //     .WithOne(p => p.User)
         //     .HasForeignKey<UserProfile>(p => p.UserId);

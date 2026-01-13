@@ -3,32 +3,32 @@ using MyTemplate.Domain.Entities;
 namespace MyTemplate.Application.Interfaces;
 
 /// <summary>
-/// Interface pour le service JWT.
+/// Interface for JWT service.
 /// </summary>
 public interface IJwtService
 {
     /// <summary>
-    /// Génère un token JWT pour un utilisateur
+    /// Generates a JWT token for a user
     /// </summary>
     Task<string> GenerateTokenAsync(ApplicationUser user);
 
     /// <summary>
-    /// Génère un token de rafraîchissement
+    /// Generates a refresh token
     /// </summary>
     string GenerateRefreshToken();
 
     /// <summary>
-    /// Récupère l'identifiant utilisateur depuis un token
+    /// Gets the user identifier from a token
     /// </summary>
     string? GetUserIdFromToken(string token);
 
     /// <summary>
-    /// Récupère la date d'expiration du token
+    /// Gets the token expiration date
     /// </summary>
     DateTime GetTokenExpiration(bool rememberMe = false);
 
     /// <summary>
-    /// Valide un token JWT
+    /// Validates a JWT token
     /// </summary>
     bool ValidateToken(string token);
 }

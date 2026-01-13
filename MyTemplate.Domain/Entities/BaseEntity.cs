@@ -1,40 +1,40 @@
 namespace MyTemplate.Domain.Entities;
 
 /// <summary>
-/// Classe de base pour toutes les entités du domaine.
-/// Fournit des propriétés communes d'audit.
+/// Base class for all domain entities.
+/// Provides common audit properties.
 ///
-/// UTILISATION : Héritez de cette classe pour vos entités.
+/// USAGE: Inherit from this class for your entities.
 /// </summary>
 public abstract class BaseEntity
 {
     /// <summary>
-    /// Identifiant unique de l'entité
+    /// Unique identifier of the entity
     /// </summary>
     public Guid Id { get; set; } = Guid.NewGuid();
 
     /// <summary>
-    /// Date de création
+    /// Creation date
     /// </summary>
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     /// <summary>
-    /// Date de dernière modification
+    /// Last modification date
     /// </summary>
     public DateTime? UpdatedAt { get; set; }
 
     /// <summary>
-    /// Soft delete - indique si l'entité est supprimée
+    /// Soft delete - indicates if the entity is deleted
     /// </summary>
     public bool IsDeleted { get; set; } = false;
 }
 
 // ============================================================
-// EXEMPLES D'ENTITÉS - Décommentez et adaptez selon vos besoins
+// ENTITY EXAMPLES - Uncomment and adapt as needed
 // ============================================================
 
 // /// <summary>
-// /// Exemple d'entité Product
+// /// Product entity example
 // /// </summary>
 // public class Product : BaseEntity
 // {
@@ -44,25 +44,25 @@ public abstract class BaseEntity
 //     public int Stock { get; set; }
 //     public bool IsAvailable { get; set; } = true;
 //
-//     // Relation avec Category (exemple)
+//     // Relationship with Category (example)
 //     public Guid? CategoryId { get; set; }
 //     public virtual Category? Category { get; set; }
 // }
 
 // /// <summary>
-// /// Exemple d'entité Category
+// /// Category entity example
 // /// </summary>
 // public class Category : BaseEntity
 // {
 //     public string Name { get; set; } = string.Empty;
 //     public string? Description { get; set; }
 //
-//     // Navigation inverse
+//     // Inverse navigation
 //     public virtual ICollection<Product>? Products { get; set; }
 // }
 
 // /// <summary>
-// /// Exemple d'entité Order
+// /// Order entity example
 // /// </summary>
 // public class Order : BaseEntity
 // {
@@ -71,16 +71,16 @@ public abstract class BaseEntity
 //     public decimal TotalAmount { get; set; }
 //     public OrderStatus Status { get; set; } = OrderStatus.Pending;
 //
-//     // Relation avec ApplicationUser
+//     // Relationship with ApplicationUser
 //     public string UserId { get; set; } = string.Empty;
 //     public virtual ApplicationUser? User { get; set; }
 //
-//     // Relation avec OrderItems
+//     // Relationship with OrderItems
 //     public virtual ICollection<OrderItem>? Items { get; set; }
 // }
 
 // /// <summary>
-// /// Exemple d'énumération OrderStatus
+// /// OrderStatus enumeration example
 // /// </summary>
 // public enum OrderStatus
 // {

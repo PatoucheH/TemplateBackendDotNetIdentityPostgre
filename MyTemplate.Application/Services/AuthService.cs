@@ -7,8 +7,8 @@ using MyTemplate.Domain.Entities;
 namespace MyTemplate.Application.Services;
 
 /// <summary>
-/// Service d'authentification.
-/// Gère l'inscription, la connexion et la gestion des tokens.
+/// Authentication service.
+/// Handles registration, login and token management.
 /// </summary>
 public class AuthService : IAuthService
 {
@@ -31,14 +31,14 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto, CancellationToken cancellationToken = default)
     {
-        // Vérifier si l'email existe déjà
+        // Check if email already exists
         var existingUser = await _userManager.FindByEmailAsync(registerDto.Email);
         if (existingUser != null)
         {
-            return AuthResponseDto.FailureResponse("Un utilisateur avec cet email existe déjà");
+            return AuthResponseDto.FailureResponse("A user with this email already exists");
         }
 
-        // Créer le nouvel utilisateur
+        // Create the new user
         var user = new ApplicationUser
         {
             UserName = registerDto.UserName ?? registerDto.Email,
@@ -54,59 +54,60 @@ public class AuthService : IAuthService
         if (!result.Succeeded)
         {
             var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-            _logger.LogWarning("Échec de création d'utilisateur pour {Email}: {Errors}", registerDto.Email, errors);
-            return AuthResponseDto.FailureResponse($"Échec de l'inscription: {errors}");
+            _logger.LogWarning("Failed to create user for {Email}: {Errors}", registerDto.Email, errors);
+            return AuthResponseDto.FailureResponse($"Registration failed: {errors}");
         }
 
-        // Ajouter le rôle par défaut (optionnel)
-        // await _userManager.AddToRoleAsync(user, "User");
+        // Add default User role
+        await _userManager.AddToRoleAsync(user, "User");
 
-        _logger.LogInformation("Utilisateur créé avec succès: {UserId}", user.Id);
+        _logger.LogInformation("User created successfully: {UserId}", user.Id);
 
-        // Générer le token
+        // Generate token
         var token = await _jwtService.GenerateTokenAsync(user);
         var expiration = _jwtService.GetTokenExpiration();
         var refreshToken = _jwtService.GenerateRefreshToken();
 
-        var userDto = MapToUserDto(user, []);
+        var roles = await _userManager.GetRolesAsync(user);
+        var userDto = MapToUserDto(user, roles.ToList());
 
         return AuthResponseDto.SuccessResponse(token, expiration, userDto, refreshToken);
     }
 
     public async Task<AuthResponseDto> LoginAsync(LoginDto loginDto, CancellationToken cancellationToken = default)
     {
-        // Trouver l'utilisateur par email ou nom d'utilisateur
+        // Find user by email or username
         var user = await _userManager.FindByEmailAsync(loginDto.EmailOrUserName)
                    ?? await _userManager.FindByNameAsync(loginDto.EmailOrUserName);
 
         if (user == null)
         {
-            return AuthResponseDto.FailureResponse("Identifiants invalides");
+            return AuthResponseDto.FailureResponse("Invalid credentials");
         }
 
-        // Vérifier si l'utilisateur est actif
+        // Check if user is active
         if (!user.IsActive)
         {
-            return AuthResponseDto.FailureResponse("Ce compte a été désactivé");
+            return AuthResponseDto.FailureResponse("This account has been deactivated");
         }
 
-        // Vérifier le mot de passe
+        // Verify password
         var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, lockoutOnFailure: true);
 
         if (result.IsLockedOut)
         {
-            _logger.LogWarning("Compte verrouillé pour l'utilisateur: {UserId}", user.Id);
-            return AuthResponseDto.FailureResponse("Compte verrouillé. Veuillez réessayer plus tard.");
+            _logger.LogWarning("Account locked for user: {UserId}", user.Id);
+            return AuthResponseDto.FailureResponse("Account locked. Please try again later.");
         }
 
         if (!result.Succeeded)
         {
-            return AuthResponseDto.FailureResponse("Identifiants invalides");
+            return AuthResponseDto.FailureResponse("Invalid credentials");
         }
 
-        _logger.LogInformation("Connexion réussie pour l'utilisateur: {UserId}", user.Id);
+        _logger.LogInformation("Login successful for user: {UserId}", user.Id);
 
-        // Générer le token
+        // Generate token
         var token = await _jwtService.GenerateTokenAsync(user);
         var expiration = _jwtService.GetTokenExpiration(loginDto.RememberMe);
         var refreshToken = _jwtService.GenerateRefreshToken();
@@ -119,18 +120,18 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponseDto> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
     {
-        // PERSONNALISATION : Implémentez la logique de rafraîchissement du token
-        // Vous devrez stocker les refresh tokens dans la base de données
-        // et valider le token reçu contre celui stocké
+        // CUSTOMIZATION: Implement the token refresh logic
+        // You will need to store refresh tokens in the database
+        // and validate the received token against the stored one
 
         await Task.CompletedTask;
-        return AuthResponseDto.FailureResponse("Refresh token non implémenté. Voir les commentaires dans le code.");
+        return AuthResponseDto.FailureResponse("Refresh token not implemented. See comments in code.");
     }
 
     public async Task<bool> RevokeTokenAsync(string userId, CancellationToken cancellationToken = default)
     {
-        // PERSONNALISATION : Implémentez la révocation du token
-        // Supprimez ou invalidez le refresh token dans la base de données
+        // CUSTOMIZATION: Implement token revocation
+        // Delete or invalidate the refresh token in the database
 
         await Task.CompletedTask;
         return true;
@@ -143,7 +144,62 @@ public class AuthService : IAuthService
     }
 
     // ============================================================
-    // MÉTHODES PRIVÉES
+    // [COOKIES] - COOKIE METHODS (for Blazor)
+    // Delete this section if you only use JWT
+    // ============================================================
+
+    public async Task<AuthResponseDto> LoginWithCookieAsync(LoginDto loginDto, CancellationToken cancellationToken = default)
+    {
+        // Find user by email or username
+        var user = await _userManager.FindByEmailAsync(loginDto.EmailOrUserName)
+                   ?? await _userManager.FindByNameAsync(loginDto.EmailOrUserName);
+
+        if (user == null)
+        {
+            return AuthResponseDto.FailureResponse("Invalid credentials");
+        }
+
+        // Check if user is active
+        if (!user.IsActive)
+        {
+            return AuthResponseDto.FailureResponse("This account has been deactivated");
+        }
+
+        // Sign in user with cookie creation
+        var result = await _signInManager.PasswordSignInAsync(
+            user,
+            loginDto.Password,
+            isPersistent: loginDto.RememberMe,
+            lockoutOnFailure: true);
+
+        if (result.IsLockedOut)
+        {
+            _logger.LogWarning("Account locked for user: {UserId}", user.Id);
+            return AuthResponseDto.FailureResponse("Account locked. Please try again later.");
+        }
+
+        if (!result.Succeeded)
+        {
+            return AuthResponseDto.FailureResponse("Invalid credentials");
+        }
+
+        _logger.LogInformation("Cookie login successful for user: {UserId}", user.Id);
+
+        var roles = await _userManager.GetRolesAsync(user);
+        var userDto = MapToUserDto(user, roles.ToList());
+
+        // Return without JWT token (cookie is managed by Identity)
+        return AuthResponseDto.SuccessResponse(token: null!, DateTime.UtcNow.AddDays(7), userDto, refreshToken: null);
+    }
+
+    public async Task LogoutWithCookieAsync(CancellationToken cancellationToken = default)
+    {
+        await _signInManager.SignOutAsync();
+        _logger.LogInformation("User logged out via cookie");
+    }
+
+    // ============================================================
+    // PRIVATE METHODS
     // ============================================================
 
     private static UserDto MapToUserDto(ApplicationUser user, List<string> roles)

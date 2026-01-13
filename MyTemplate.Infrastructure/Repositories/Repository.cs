@@ -7,10 +7,10 @@ using MyTemplate.Infrastructure.Data;
 namespace MyTemplate.Infrastructure.Repositories;
 
 /// <summary>
-/// Implémentation générique du repository.
-/// Fournit les opérations CRUD de base pour toutes les entités.
+/// Generic repository implementation.
+/// Provides basic CRUD operations for all entities.
 /// </summary>
-/// <typeparam name="T">Type d'entité qui hérite de BaseEntity</typeparam>
+/// <typeparam name="T">Entity type that inherits from BaseEntity</typeparam>
 public class Repository<T> : IRepository<T> where T : BaseEntity
 {
     protected readonly ApplicationDbContext _context;
@@ -23,7 +23,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
     }
 
     // ============================================================
-    // LECTURE
+    // READ
     // ============================================================
 
     public virtual async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -81,7 +81,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
     }
 
     // ============================================================
-    // ÉCRITURE
+    // WRITE
     // ============================================================
 
     public virtual async Task<T> AddAsync(T entity, CancellationToken cancellationToken = default)

@@ -3,24 +3,24 @@ using System.ComponentModel.DataAnnotations;
 namespace MyTemplate.Application.DTOs.Auth;
 
 /// <summary>
-/// DTO pour la connexion d'un utilisateur.
+/// DTO for user login.
 /// </summary>
 public class LoginDto
 {
     /// <summary>
-    /// Email ou nom d'utilisateur
+    /// Email or username
     /// </summary>
-    [Required(ErrorMessage = "L'email ou nom d'utilisateur est requis")]
+    [Required(ErrorMessage = "Email or username is required")]
     public string EmailOrUserName { get; set; } = string.Empty;
 
     /// <summary>
-    /// Mot de passe
+    /// Password
     /// </summary>
-    [Required(ErrorMessage = "Le mot de passe est requis")]
+    [Required(ErrorMessage = "Password is required")]
     public string Password { get; set; } = string.Empty;
 
     /// <summary>
-    /// Se souvenir de moi (prolonge la durée du token)
+    /// Remember me (extends token duration)
     /// </summary>
     public bool RememberMe { get; set; } = false;
 }

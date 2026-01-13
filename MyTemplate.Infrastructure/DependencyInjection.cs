@@ -10,13 +10,13 @@ using MyTemplate.Infrastructure.Repositories;
 namespace MyTemplate.Infrastructure;
 
 /// <summary>
-/// Extension pour l'injection de dépendances de l'Infrastructure.
-/// Centralise la configuration des services d'infrastructure.
+/// Extension for Infrastructure dependency injection.
+/// Centralizes infrastructure service configuration.
 /// </summary>
 public static class DependencyInjection
 {
     /// <summary>
-    /// Ajoute les services d'infrastructure au conteneur DI.
+    /// Adds infrastructure services to the DI container.
     /// </summary>
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
@@ -32,7 +32,7 @@ public static class DependencyInjection
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString, npgsqlOptions =>
             {
-                // Résilience des connexions
+                // Connection resilience
                 npgsqlOptions.EnableRetryOnFailure(
                     maxRetryCount: 3,
                     maxRetryDelay: TimeSpan.FromSeconds(30),
@@ -48,7 +48,7 @@ public static class DependencyInjection
 
         services.AddIdentity<ApplicationUser, IdentityRole>(options =>
         {
-            // PERSONNALISATION : Configurez les options de mot de passe
+            // CUSTOMIZATION: Configure password options
             options.Password.RequireDigit = true;
             options.Password.RequireLowercase = true;
             options.Password.RequireUppercase = true;
@@ -56,18 +56,18 @@ public static class DependencyInjection
             options.Password.RequiredLength = 8;
             options.Password.RequiredUniqueChars = 1;
 
-            // PERSONNALISATION : Configurez les options de lockout
+            // CUSTOMIZATION: Configure lockout options
             options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
             options.Lockout.MaxFailedAccessAttempts = 5;
             options.Lockout.AllowedForNewUsers = true;
 
-            // PERSONNALISATION : Configurez les options utilisateur
+            // CUSTOMIZATION: Configure user options
             options.User.RequireUniqueEmail = true;
             options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 
-            // PERSONNALISATION : Configurez les options de sign-in
-            options.SignIn.RequireConfirmedEmail = false; // Mettre à true en production
+            // CUSTOMIZATION: Configure sign-in options
+            options.SignIn.RequireConfirmedEmail = false; // Set to true in production
             options.SignIn.RequireConfirmedPhoneNumber = false;
         })
         .AddEntityFrameworkStores<ApplicationDbContext>()

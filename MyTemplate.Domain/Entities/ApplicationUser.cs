@@ -3,53 +3,53 @@ using Microsoft.AspNetCore.Identity;
 namespace MyTemplate.Domain.Entities;
 
 /// <summary>
-/// Utilisateur personnalisé de l'application.
-/// Hérite de IdentityUser pour bénéficier de toutes les propriétés Identity.
+/// Custom application user.
+/// Inherits from IdentityUser to benefit from all Identity properties.
 ///
-/// PERSONNALISATION : Ajoutez vos propriétés personnalisées ici.
+/// CUSTOMIZATION: Add your custom properties here.
 /// </summary>
 public class ApplicationUser : IdentityUser
 {
     // ============================================================
-    // PROPRIÉTÉS PERSONNALISÉES - Ajoutez les vôtres ci-dessous
+    // CUSTOM PROPERTIES - Add yours below
     // ============================================================
 
     /// <summary>
-    /// Prénom de l'utilisateur
+    /// User's first name
     /// </summary>
     public string? FirstName { get; set; }
 
     /// <summary>
-    /// Nom de famille de l'utilisateur
+    /// User's last name
     /// </summary>
     public string? LastName { get; set; }
 
     /// <summary>
-    /// Date de création du compte
+    /// Account creation date
     /// </summary>
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     /// <summary>
-    /// Date de dernière mise à jour
+    /// Last update date
     /// </summary>
     public DateTime? UpdatedAt { get; set; }
 
     /// <summary>
-    /// Indique si l'utilisateur est actif
+    /// Indicates whether the user is active
     /// </summary>
     public bool IsActive { get; set; } = true;
 
     // ============================================================
-    // RELATIONS - Décommentez et adaptez selon vos besoins
+    // RELATIONSHIPS - Uncomment and adapt as needed
     // ============================================================
 
     // /// <summary>
-    // /// Collection des commandes de l'utilisateur (exemple)
+    // /// User's orders collection (example)
     // /// </summary>
     // public virtual ICollection<Order>? Orders { get; set; }
 
     // /// <summary>
-    // /// Profil de l'utilisateur (exemple relation 1-1)
+    // /// User's profile (example 1-1 relationship)
     // /// </summary>
     // public virtual UserProfile? Profile { get; set; }
 }

@@ -1,29 +1,29 @@
 namespace MyTemplate.Application.DTOs.Common;
 
 /// <summary>
-/// Réponse API standardisée.
-/// Utilisé pour uniformiser les réponses de l'API.
+/// Standardized API response.
+/// Used to uniformize API responses.
 /// </summary>
-/// <typeparam name="T">Type des données retournées</typeparam>
+/// <typeparam name="T">Type of returned data</typeparam>
 public class ApiResponse<T>
 {
     /// <summary>
-    /// Indique si la requête a réussi
+    /// Indicates if the request was successful
     /// </summary>
     public bool Success { get; set; }
 
     /// <summary>
-    /// Message de résultat
+    /// Result message
     /// </summary>
     public string Message { get; set; } = string.Empty;
 
     /// <summary>
-    /// Données retournées
+    /// Returned data
     /// </summary>
     public T? Data { get; set; }
 
     /// <summary>
-    /// Liste des erreurs (si échec)
+    /// List of errors (if failed)
     /// </summary>
     public List<string> Errors { get; set; } = [];
 
@@ -31,7 +31,7 @@ public class ApiResponse<T>
     // FACTORY METHODS
     // ============================================================
 
-    public static ApiResponse<T> SuccessResult(T data, string message = "Opération réussie")
+    public static ApiResponse<T> SuccessResult(T data, string message = "Operation successful")
     {
         return new ApiResponse<T>
         {
@@ -53,26 +53,26 @@ public class ApiResponse<T>
 }
 
 /// <summary>
-/// Réponse API sans données.
+/// API response without data.
 /// </summary>
 public class ApiResponse
 {
     /// <summary>
-    /// Indique si la requête a réussi
+    /// Indicates if the request was successful
     /// </summary>
     public bool Success { get; set; }
 
     /// <summary>
-    /// Message de résultat
+    /// Result message
     /// </summary>
     public string Message { get; set; } = string.Empty;
 
     /// <summary>
-    /// Liste des erreurs (si échec)
+    /// List of errors (if failed)
     /// </summary>
     public List<string> Errors { get; set; } = [];
 
-    public static ApiResponse SuccessResponse(string message = "Opération réussie")
+    public static ApiResponse SuccessResponse(string message = "Operation successful")
     {
         return new ApiResponse
         {

@@ -6,8 +6,8 @@ using MyTemplate.Infrastructure.Data;
 namespace MyTemplate.Infrastructure.Repositories;
 
 /// <summary>
-/// Implémentation du repository utilisateur.
-/// Gère les opérations spécifiques aux utilisateurs.
+/// User repository implementation.
+/// Handles user-specific operations.
 /// </summary>
 public class UserRepository : IUserRepository
 {

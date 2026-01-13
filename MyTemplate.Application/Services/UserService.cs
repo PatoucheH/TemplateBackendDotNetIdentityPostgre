@@ -8,8 +8,8 @@ using MyTemplate.Domain.Interfaces;
 namespace MyTemplate.Application.Services;
 
 /// <summary>
-/// Service utilisateur.
-/// Gère les opérations CRUD sur les utilisateurs.
+/// User service.
+/// Handles CRUD operations on users.
 /// </summary>
 public class UserService : IUserService
 {
@@ -64,7 +64,7 @@ public class UserService : IUserService
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null) return null;
 
-        // Mettre à jour les propriétés
+        // Update properties
         if (updateDto.FirstName != null)
             user.FirstName = updateDto.FirstName;
 
@@ -79,7 +79,7 @@ public class UserService : IUserService
         var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded)
         {
-            _logger.LogWarning("Échec de mise à jour de l'utilisateur {UserId}: {Errors}",
+            _logger.LogWarning("Failed to update user {UserId}: {Errors}",
                 userId, string.Join(", ", result.Errors.Select(e => e.Description)));
             return null;
         }
@@ -100,12 +100,12 @@ public class UserService : IUserService
 
         if (!result.Succeeded)
         {
-            _logger.LogWarning("Échec de changement de mot de passe pour {UserId}: {Errors}",
+            _logger.LogWarning("Failed to change password for {UserId}: {Errors}",
                 userId, string.Join(", ", result.Errors.Select(e => e.Description)));
             return false;
         }
 
-        _logger.LogInformation("Mot de passe changé avec succès pour l'utilisateur: {UserId}", userId);
+        _logger.LogInformation("Password changed successfully for user: {UserId}", userId);
         return true;
     }
 
@@ -120,7 +120,7 @@ public class UserService : IUserService
         var result = await _userManager.UpdateAsync(user);
         if (result.Succeeded)
         {
-            _logger.LogInformation("Utilisateur désactivé: {UserId}", userId);
+            _logger.LogInformation("User deactivated: {UserId}", userId);
         }
 
         return result.Succeeded;
@@ -153,7 +153,7 @@ public class UserService : IUserService
     }
 
     // ============================================================
-    // MÉTHODES PRIVÉES
+    // PRIVATE METHODS
     // ============================================================
 
     private static UserDto MapToUserDto(ApplicationUser user, List<string> roles)

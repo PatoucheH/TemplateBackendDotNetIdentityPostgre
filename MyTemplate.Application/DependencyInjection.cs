@@ -5,13 +5,13 @@ using MyTemplate.Application.Services;
 namespace MyTemplate.Application;
 
 /// <summary>
-/// Extension pour l'injection de dépendances de l'Application.
-/// Centralise la configuration des services applicatifs.
+/// Extension for Application dependency injection.
+/// Centralizes application service configuration.
 /// </summary>
 public static class DependencyInjection
 {
     /// <summary>
-    /// Ajoute les services applicatifs au conteneur DI.
+    /// Adds application services to the DI container.
     /// </summary>
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
@@ -24,7 +24,7 @@ public static class DependencyInjection
         services.AddScoped<IJwtService, JwtService>();
 
         // ============================================================
-        // AJOUTEZ VOS SERVICES ICI
+        // ADD YOUR SERVICES HERE
         // ============================================================
 
         // services.AddScoped<IProductService, ProductService>();

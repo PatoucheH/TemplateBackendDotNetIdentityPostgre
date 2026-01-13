@@ -5,10 +5,10 @@ using MyTemplate.Domain.Entities;
 namespace MyTemplate.Infrastructure.Data;
 
 /// <summary>
-/// DbContext principal de l'application.
-/// Hérite de IdentityDbContext pour intégrer Identity.
+/// Main application DbContext.
+/// Inherits from IdentityDbContext to integrate Identity.
 ///
-/// PERSONNALISATION : Ajoutez vos DbSet et configurations ici.
+/// CUSTOMIZATION: Add your DbSets and configurations here.
 /// </summary>
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
@@ -18,21 +18,21 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     }
 
     // ============================================================
-    // DBSETS - Ajoutez vos entités ici
+    // DBSETS - Add your entities here
     // ============================================================
 
     // /// <summary>
-    // /// Table des produits (exemple)
+    // /// Products table (example)
     // /// </summary>
     // public DbSet<Product> Products => Set<Product>();
 
     // /// <summary>
-    // /// Table des catégories (exemple)
+    // /// Categories table (example)
     // /// </summary>
     // public DbSet<Category> Categories => Set<Category>();
 
     // /// <summary>
-    // /// Table des commandes (exemple)
+    // /// Orders table (example)
     // /// </summary>
     // public DbSet<Order> Orders => Set<Order>();
 
@@ -40,14 +40,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         base.OnModelCreating(builder);
 
-        // Applique toutes les configurations du dossier Configurations
+        // Apply all configurations from the Configurations folder
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
         // ============================================================
-        // CONFIGURATION DU SCHÉMA IDENTITY (optionnel)
+        // IDENTITY SCHEMA CONFIGURATION (optional)
         // ============================================================
 
-        // Renomme les tables Identity si nécessaire
+        // Rename Identity tables if needed
         // builder.Entity<ApplicationUser>(entity => entity.ToTable("Users"));
         // builder.Entity<IdentityRole>(entity => entity.ToTable("Roles"));
         // builder.Entity<IdentityUserRole<string>>(entity => entity.ToTable("UserRoles"));
@@ -58,7 +58,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     }
 
     /// <summary>
-    /// Override pour gérer automatiquement les dates d'audit
+    /// Override to automatically handle audit dates
     /// </summary>
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

@@ -5,8 +5,8 @@ using MyTemplate.Infrastructure.Data;
 namespace MyTemplate.Infrastructure.Repositories;
 
 /// <summary>
-/// Implémentation du pattern Unit of Work.
-/// Coordonne les transactions entre plusieurs repositories.
+/// Unit of Work pattern implementation.
+/// Coordinates transactions between multiple repositories.
 /// </summary>
 public class UnitOfWork : IUnitOfWork
 {
@@ -15,7 +15,7 @@ public class UnitOfWork : IUnitOfWork
     private bool _disposed;
 
     // ============================================================
-    // REPOSITORIES - Ajoutez vos repositories ici
+    // REPOSITORIES - Add your repositories here
     // ============================================================
 
     // private IRepository<Product>? _products;
@@ -37,7 +37,7 @@ public class UnitOfWork : IUnitOfWork
     }
 
     // ============================================================
-    // MÉTHODES DE TRANSACTION
+    // TRANSACTION METHODS
     // ============================================================
 
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

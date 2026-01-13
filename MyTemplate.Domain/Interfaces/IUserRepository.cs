@@ -3,48 +3,48 @@ using MyTemplate.Domain.Entities;
 namespace MyTemplate.Domain.Interfaces;
 
 /// <summary>
-/// Interface spécifique pour les opérations sur les utilisateurs.
-/// Complète les fonctionnalités d'Identity avec des méthodes personnalisées.
+/// Specific interface for user operations.
+/// Complements Identity features with custom methods.
 /// </summary>
 public interface IUserRepository
 {
     /// <summary>
-    /// Récupère un utilisateur par son identifiant
+    /// Gets a user by their identifier
     /// </summary>
     Task<ApplicationUser?> GetByIdAsync(string userId, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Récupère un utilisateur par son email
+    /// Gets a user by their email
     /// </summary>
     Task<ApplicationUser?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Récupère un utilisateur par son nom d'utilisateur
+    /// Gets a user by their username
     /// </summary>
     Task<ApplicationUser?> GetByUserNameAsync(string userName, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Récupère tous les utilisateurs actifs
+    /// Gets all active users
     /// </summary>
     Task<IReadOnlyList<ApplicationUser>> GetAllActiveAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Met à jour les informations d'un utilisateur
+    /// Updates a user's information
     /// </summary>
     Task UpdateAsync(ApplicationUser user, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Désactive un utilisateur (soft delete)
+    /// Deactivates a user (soft delete)
     /// </summary>
     Task DeactivateAsync(string userId, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Vérifie si un email est déjà utilisé
+    /// Checks if an email is already in use
     /// </summary>
     Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Vérifie si un nom d'utilisateur est déjà utilisé
+    /// Checks if a username is already in use
     /// </summary>
     Task<bool> UserNameExistsAsync(string userName, CancellationToken cancellationToken = default);
 }

@@ -11,7 +11,7 @@ using MyTemplate.Domain.Entities;
 namespace MyTemplate.Application.Services;
 
 /// <summary>
-/// Service JWT pour la génération et validation des tokens.
+/// JWT service for token generation and validation.
 /// </summary>
 public class JwtService : IJwtService
 {
@@ -33,10 +33,10 @@ public class JwtService : IJwtService
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        // Récupérer les rôles de l'utilisateur
+        // Get user roles
         var roles = await _userManager.GetRolesAsync(user);
 
-        // Créer les claims
+        // Create claims
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Sub, user.Id),
@@ -47,13 +47,13 @@ public class JwtService : IJwtService
             new(ClaimTypes.Email, user.Email ?? string.Empty)
         };
 
-        // Ajouter les rôles aux claims
+        // Add roles to claims
         foreach (var role in roles)
         {
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
 
-        // Ajouter des claims personnalisés (optionnel)
+        // Add custom claims (optional)
         if (!string.IsNullOrEmpty(user.FirstName))
             claims.Add(new Claim("firstName", user.FirstName));
 
@@ -99,7 +99,7 @@ public class JwtService : IJwtService
     {
         var jwtSettings = _configuration.GetSection("JwtSettings");
 
-        // PERSONNALISATION : Ajustez les durées d'expiration selon vos besoins
+        // CUSTOMIZATION: Adjust expiration durations as needed
         var expirationMinutes = rememberMe
             ? int.Parse(jwtSettings["RememberMeExpirationInDays"] ?? "7") * 24 * 60
             : int.Parse(jwtSettings["ExpirationInMinutes"] ?? "60");

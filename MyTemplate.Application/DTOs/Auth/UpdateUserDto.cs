@@ -3,52 +3,52 @@ using System.ComponentModel.DataAnnotations;
 namespace MyTemplate.Application.DTOs.Auth;
 
 /// <summary>
-/// DTO pour la mise à jour d'un utilisateur.
+/// DTO for updating a user.
 /// </summary>
 public class UpdateUserDto
 {
     /// <summary>
-    /// Prénom
+    /// First name
     /// </summary>
-    [MaxLength(100, ErrorMessage = "Le prénom ne peut pas dépasser 100 caractères")]
+    [MaxLength(100, ErrorMessage = "First name cannot exceed 100 characters")]
     public string? FirstName { get; set; }
 
     /// <summary>
-    /// Nom de famille
+    /// Last name
     /// </summary>
-    [MaxLength(100, ErrorMessage = "Le nom ne peut pas dépasser 100 caractères")]
+    [MaxLength(100, ErrorMessage = "Last name cannot exceed 100 characters")]
     public string? LastName { get; set; }
 
     /// <summary>
-    /// Numéro de téléphone
+    /// Phone number
     /// </summary>
-    [Phone(ErrorMessage = "Format de numéro de téléphone invalide")]
+    [Phone(ErrorMessage = "Invalid phone number format")]
     public string? PhoneNumber { get; set; }
 }
 
 /// <summary>
-/// DTO pour le changement de mot de passe.
+/// DTO for password change.
 /// </summary>
 public class ChangePasswordDto
 {
     /// <summary>
-    /// Mot de passe actuel
+    /// Current password
     /// </summary>
-    [Required(ErrorMessage = "Le mot de passe actuel est requis")]
+    [Required(ErrorMessage = "Current password is required")]
     public string CurrentPassword { get; set; } = string.Empty;
 
     /// <summary>
-    /// Nouveau mot de passe
+    /// New password
     /// </summary>
-    [Required(ErrorMessage = "Le nouveau mot de passe est requis")]
-    [MinLength(8, ErrorMessage = "Le mot de passe doit contenir au moins 8 caractères")]
-    [MaxLength(100, ErrorMessage = "Le mot de passe ne peut pas dépasser 100 caractères")]
+    [Required(ErrorMessage = "New password is required")]
+    [MinLength(8, ErrorMessage = "Password must be at least 8 characters")]
+    [MaxLength(100, ErrorMessage = "Password cannot exceed 100 characters")]
     public string NewPassword { get; set; } = string.Empty;
 
     /// <summary>
-    /// Confirmation du nouveau mot de passe
+    /// New password confirmation
     /// </summary>
-    [Required(ErrorMessage = "La confirmation du mot de passe est requise")]
-    [Compare("NewPassword", ErrorMessage = "Les mots de passe ne correspondent pas")]
+    [Required(ErrorMessage = "Password confirmation is required")]
+    [Compare("NewPassword", ErrorMessage = "Passwords do not match")]
     public string ConfirmNewPassword { get; set; } = string.Empty;
 }

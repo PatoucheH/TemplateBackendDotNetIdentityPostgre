@@ -8,8 +8,8 @@ using System.Security.Claims;
 namespace MyTemplate.Api.Controllers;
 
 /// <summary>
-/// Controller pour l'authentification.
-/// Gère l'inscription, la connexion et la gestion des tokens.
+/// Authentication controller.
+/// Handles registration, login and token management.
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
@@ -25,10 +25,10 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Inscrit un nouvel utilisateur
+    /// Registers a new user
     /// </summary>
-    /// <param name="registerDto">Données d'inscription</param>
-    /// <returns>Token JWT et informations utilisateur</returns>
+    /// <param name="registerDto">Registration data</param>
+    /// <returns>JWT token and user information</returns>
     [HttpPost("register")]
     [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status400BadRequest)]
@@ -36,7 +36,7 @@ public class AuthController : ControllerBase
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest(AuthResponseDto.FailureResponse("Données invalides"));
+            return BadRequest(AuthResponseDto.FailureResponse("Invalid data"));
         }
 
         var result = await _authService.RegisterAsync(registerDto);
@@ -46,15 +46,15 @@ public class AuthController : ControllerBase
             return BadRequest(result);
         }
 
-        _logger.LogInformation("Nouvel utilisateur inscrit: {Email}", registerDto.Email);
+        _logger.LogInformation("New user registered: {Email}", registerDto.Email);
         return Ok(result);
     }
 
     /// <summary>
-    /// Connecte un utilisateur existant
+    /// Logs in an existing user
     /// </summary>
-    /// <param name="loginDto">Données de connexion</param>
-    /// <returns>Token JWT et informations utilisateur</returns>
+    /// <param name="loginDto">Login data</param>
+    /// <returns>JWT token and user information</returns>
     [HttpPost("login")]
     [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status401Unauthorized)]
@@ -62,7 +62,7 @@ public class AuthController : ControllerBase
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest(AuthResponseDto.FailureResponse("Données invalides"));
+            return BadRequest(AuthResponseDto.FailureResponse("Invalid data"));
         }
 
         var result = await _authService.LoginAsync(loginDto);
@@ -76,10 +76,10 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Rafraîchit le token d'accès
+    /// Refreshes the access token
     /// </summary>
-    /// <param name="refreshToken">Token de rafraîchissement</param>
-    /// <returns>Nouveau token JWT</returns>
+    /// <param name="refreshToken">Refresh token</param>
+    /// <returns>New JWT token</returns>
     [HttpPost("refresh")]
     [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status401Unauthorized)]
@@ -96,9 +96,9 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Déconnecte l'utilisateur (révoque le token)
+    /// Logs out the user (revokes the token)
     /// </summary>
-    /// <returns>Résultat de la déconnexion</returns>
+    /// <returns>Logout result</returns>
     [HttpPost("logout")]
     [Authorize]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
@@ -107,25 +107,25 @@ public class AuthController : ControllerBase
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userId))
         {
-            return Unauthorized(ApiResponse.Failure("Utilisateur non identifié"));
+            return Unauthorized(ApiResponse.Failure("User not identified"));
         }
 
         await _authService.RevokeTokenAsync(userId);
 
-        return Ok(ApiResponse.SuccessResponse("Déconnexion réussie"));
+        return Ok(ApiResponse.SuccessResponse("Logout successful"));
     }
 
     /// <summary>
-    /// Récupère les informations de l'utilisateur connecté
+    /// Gets the current user's information
     /// </summary>
-    /// <returns>Informations de l'utilisateur</returns>
+    /// <returns>User information</returns>
     [HttpGet("me")]
     [Authorize]
     [ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<ApiResponse<UserDto>> GetCurrentUser()
     {
-        // Extraire les informations du token JWT
+        // Extract information from JWT token or cookie
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var email = User.FindFirstValue(ClaimTypes.Email);
         var userName = User.FindFirstValue(ClaimTypes.Name);
@@ -149,5 +149,49 @@ public class AuthController : ControllerBase
         };
 
         return Ok(ApiResponse<UserDto>.SuccessResult(userDto));
+    }
+
+    // ============================================================
+    // [COOKIES] - COOKIE ENDPOINTS (for Blazor)
+    // Delete this section if you only use JWT
+    // ============================================================
+
+    /// <summary>
+    /// Logs in a user via cookie (for Blazor)
+    /// </summary>
+    /// <param name="loginDto">Login data</param>
+    /// <returns>User information</returns>
+    [HttpPost("cookie/login")]
+    [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<AuthResponseDto>> LoginWithCookie([FromBody] LoginDto loginDto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(AuthResponseDto.FailureResponse("Invalid data"));
+        }
+
+        var result = await _authService.LoginWithCookieAsync(loginDto);
+
+        if (!result.Success)
+        {
+            return Unauthorized(result);
+        }
+
+        _logger.LogInformation("Cookie login successful: {Email}", loginDto.EmailOrUserName);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Logs out the user by removing the cookie (for Blazor)
+    /// </summary>
+    /// <returns>Logout result</returns>
+    [HttpPost("cookie/logout")]
+    [Authorize]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    public async Task<ActionResult<ApiResponse>> LogoutWithCookie()
+    {
+        await _authService.LogoutWithCookieAsync();
+        return Ok(ApiResponse.SuccessResponse("Logout successful"));
     }
 }

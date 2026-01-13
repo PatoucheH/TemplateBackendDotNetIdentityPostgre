@@ -1,37 +1,37 @@
 namespace MyTemplate.Application.DTOs.Auth;
 
 /// <summary>
-/// DTO de réponse après authentification réussie.
+/// DTO response after successful authentication.
 /// </summary>
 public class AuthResponseDto
 {
     /// <summary>
-    /// Indique si l'authentification a réussi
+    /// Indicates if authentication was successful
     /// </summary>
     public bool Success { get; set; }
 
     /// <summary>
-    /// Message de résultat
+    /// Result message
     /// </summary>
     public string Message { get; set; } = string.Empty;
 
     /// <summary>
-    /// Token JWT d'accès
+    /// JWT access token
     /// </summary>
     public string? Token { get; set; }
 
     /// <summary>
-    /// Token de rafraîchissement (optionnel)
+    /// Refresh token (optional)
     /// </summary>
     public string? RefreshToken { get; set; }
 
     /// <summary>
-    /// Date d'expiration du token
+    /// Token expiration date
     /// </summary>
     public DateTime? Expiration { get; set; }
 
     /// <summary>
-    /// Informations de l'utilisateur
+    /// User information
     /// </summary>
     public UserDto? User { get; set; }
 
@@ -44,7 +44,7 @@ public class AuthResponseDto
         return new AuthResponseDto
         {
             Success = true,
-            Message = "Authentification réussie",
+            Message = "Authentication successful",
             Token = token,
             RefreshToken = refreshToken,
             Expiration = expiration,

@@ -1,65 +1,65 @@
 namespace MyTemplate.Application.DTOs.Auth;
 
 /// <summary>
-/// DTO représentant un utilisateur.
-/// Utilisé pour les réponses API.
+/// DTO representing a user.
+/// Used for API responses.
 /// </summary>
 public class UserDto
 {
     /// <summary>
-    /// Identifiant unique de l'utilisateur
+    /// Unique user identifier
     /// </summary>
     public string Id { get; set; } = string.Empty;
 
     /// <summary>
-    /// Nom d'utilisateur
+    /// Username
     /// </summary>
     public string UserName { get; set; } = string.Empty;
 
     /// <summary>
-    /// Adresse email
+    /// Email address
     /// </summary>
     public string Email { get; set; } = string.Empty;
 
     /// <summary>
-    /// Prénom
+    /// First name
     /// </summary>
     public string? FirstName { get; set; }
 
     /// <summary>
-    /// Nom de famille
+    /// Last name
     /// </summary>
     public string? LastName { get; set; }
 
     /// <summary>
-    /// Nom complet (calculé)
+    /// Full name (computed)
     /// </summary>
     public string? FullName => string.IsNullOrWhiteSpace(FirstName) && string.IsNullOrWhiteSpace(LastName)
         ? null
         : $"{FirstName} {LastName}".Trim();
 
     /// <summary>
-    /// Email confirmé
+    /// Email confirmed
     /// </summary>
     public bool EmailConfirmed { get; set; }
 
     /// <summary>
-    /// Numéro de téléphone
+    /// Phone number
     /// </summary>
     public string? PhoneNumber { get; set; }
 
     /// <summary>
-    /// Date de création du compte
+    /// Account creation date
     /// </summary>
     public DateTime CreatedAt { get; set; }
 
     /// <summary>
-    /// Utilisateur actif
+    /// User is active
     /// </summary>
     public bool IsActive { get; set; }
 
     /// <summary>
-    /// Rôles de l'utilisateur
+    /// User roles
     /// </summary>
     public List<string> Roles { get; set; } = [];
 }

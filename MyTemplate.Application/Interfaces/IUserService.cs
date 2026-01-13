@@ -3,52 +3,52 @@ using MyTemplate.Application.DTOs.Auth;
 namespace MyTemplate.Application.Interfaces;
 
 /// <summary>
-/// Interface pour le service utilisateur.
+/// Interface for user service.
 /// </summary>
 public interface IUserService
 {
     /// <summary>
-    /// Récupère un utilisateur par son identifiant
+    /// Gets a user by their identifier
     /// </summary>
     Task<UserDto?> GetByIdAsync(string userId, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Récupère un utilisateur par son email
+    /// Gets a user by their email
     /// </summary>
     Task<UserDto?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Récupère tous les utilisateurs actifs
+    /// Gets all active users
     /// </summary>
     Task<IReadOnlyList<UserDto>> GetAllActiveAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Met à jour les informations d'un utilisateur
+    /// Updates a user's information
     /// </summary>
     Task<UserDto?> UpdateAsync(string userId, UpdateUserDto updateDto, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Change le mot de passe d'un utilisateur
+    /// Changes a user's password
     /// </summary>
     Task<bool> ChangePasswordAsync(string userId, ChangePasswordDto changePasswordDto, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Désactive un utilisateur
+    /// Deactivates a user
     /// </summary>
     Task<bool> DeactivateAsync(string userId, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Ajoute un rôle à un utilisateur
+    /// Adds a role to a user
     /// </summary>
     Task<bool> AddToRoleAsync(string userId, string roleName, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Retire un rôle d'un utilisateur
+    /// Removes a role from a user
     /// </summary>
     Task<bool> RemoveFromRoleAsync(string userId, string roleName, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Récupère les rôles d'un utilisateur
+    /// Gets a user's roles
     /// </summary>
     Task<IList<string>> GetRolesAsync(string userId, CancellationToken cancellationToken = default);
 }
